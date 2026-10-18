@@ -14,8 +14,8 @@ public class App
 {
     public static void main( String[] args ) throws IOException
     {
-    	CacheStore store = new CacheStore();
-    	CommandProcessor processor = new CommandProcessor(store);
+    	CacheStore store = new CacheStore(); //contains operations logic
+    	CommandProcessor processor = new CommandProcessor(store); //handles validation and maps the commands from the client
     	
     	ExecutorService threadPool = Executors.newFixedThreadPool(5);
     	

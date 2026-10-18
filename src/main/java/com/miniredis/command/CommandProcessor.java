@@ -42,7 +42,26 @@ public class CommandProcessor {
 				}
 				
 				return store.delete(parts[1]) ? "1" : "0";
+				
+			case "EXPIRE":
+				if(parts.length != 3){
+					return "ERR usage: EXPIRE key seconds";
+				}
+				
+				try {
+					long seconds = Long.parseLong(parts[2]);
+					
+					return store.expire(parts[1], seconds)?"1": "0";
+				} catch(NumberFormatException e) {
+					return "ERR invalid expiration time";
+				}
 			
+			case "TTL":
+				if(parts.length != 2) {
+					return "ERR usage: TTL key";
+				}
+				return String.valueOf(store.ttl(parts[1]));
+				
 			default:
 				return "ERR unknown command";
 		}
