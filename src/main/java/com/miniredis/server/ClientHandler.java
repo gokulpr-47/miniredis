@@ -3,16 +3,19 @@ package com.miniredis.server;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 import com.miniredis.command.CommandProcessor;
 
 public class ClientHandler implements Runnable{
 	private final Socket client;
 	private final CommandProcessor processor;
+	private final Set<Socket> clients;
 	
-	public ClientHandler(Socket client, CommandProcessor processor) {
+	public ClientHandler(Socket client, CommandProcessor processor, Set<Socket> clients) {
 		this.client = client;
 		this.processor = processor;
+		this.clients = clients;
 	}
 
 	@Override
@@ -31,6 +34,8 @@ public class ClientHandler implements Runnable{
 			}
 		} catch(IOException e) {
 			System.err.println("Client connection error: " + e.getMessage());
+		} finally {
+			clients.remove(client);
 		}
 	}	
 }
